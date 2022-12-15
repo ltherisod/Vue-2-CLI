@@ -1,34 +1,40 @@
 <template>
   <div class="p-2">
-    <h4>{{title}}</h4>
-    <table class="table table-bordered" :class="styled">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Ingredients</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr v-for="prod in this.products" :key="prod.id" >
-    <th scope="row">{{prod.id}}</th>
-    <td>{{prod.name}}</td>
-    <td>{{prod.ingredients}}</td>
-    <td>$ {{prod.price}}</td>
-    </tr>
-    </tbody>
-  </table>
+    <div v-if="!users.length" class="d-flex flex-column align-items-center">
+      <h2>No users added so far...</h2>
+      <img src="../assets/maneki-neko.gif" />
     </div>
+    <table v-else class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Country</th>
+          <th scope="col">Address</th>
+          <th scope="col">Subscribe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(user, index) in users" :key="index">
+          <img :src="user.img" :alt="user.name" />
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.country }}</td>
+          <td>{{ user.address }}</td>
+          <td v-if="user.subscribe === true">:D</td>
+          <td v-else>{{ user.subscribe }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
-export default{
-    name:'TableComponent',
-    props:{
-        title:String,
-        products:Array,
-        styled:String
-    }
-}
+export default {
+  name: "TableComponent",
+  props: {
+    users: Array,
+  },
+};
 </script>

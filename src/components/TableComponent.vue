@@ -1,10 +1,12 @@
 <template>
   <div class="p-2">
-    <div v-if="!users.length" class="d-flex flex-column align-items-center">
-      <h2>No users added so far...</h2>
+    <div
+      v-if="!$store.getters.getUsersData.length"
+      class="d-flex flex-column align-items-center"
+    >
       <img src="../assets/maneki-neko.gif" />
     </div>
-    <table v-else class="table table-bordered">
+    <table v-else class="table table-bordered text-center">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -12,12 +14,12 @@
           <th scope="col">Email</th>
           <th scope="col">Country</th>
           <th scope="col">Address</th>
-          <th scope="col">Subscribe</th>
+          <th scope="col">Subscribed</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, index) in users" :key="index">
-          <img :src="user.img" :alt="user.name" />
+        <tr v-for="(user, index) in $store.getters.getUsersData" :key="index">
+          <img class="img" :src="user.img" :alt="user.name" />
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.country }}</td>
@@ -31,10 +33,22 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "TableComponent",
-  props: {
-    users: Array,
+  created() {
+    this.getUsers();
+  },
+  computed: {
+    ...mapGetters(["getUsersData"]),
+  },
+  methods: {
+    ...mapActions(["getUsers"]),
   },
 };
 </script>
+<style scoped>
+.img {
+  width: 10rem;
+}
+</style>

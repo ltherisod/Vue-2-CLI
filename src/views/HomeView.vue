@@ -1,14 +1,16 @@
 <template>
   <div class="home">
-    <h2>Coming soon</h2>
+    <TableComponent />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-
+import TableComponent from "../components/TableComponent";
 export default {
   name: "HomeView",
-  components: {},
+  components: {
+    TableComponent,
+  },
 };
 </script>

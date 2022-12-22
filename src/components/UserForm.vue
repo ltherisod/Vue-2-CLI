@@ -3,7 +3,6 @@
     <div v-if="errors.length !== 0" class="errors">
       {{ showErrors }}
     </div>
-    <TableComponent :users="users" />
     <div class="containerdiv">
       <h2>Please Complete de Form</h2>
       <form id="formdata" action="" @submit.prevent="userData" class="w-50">
@@ -84,22 +83,23 @@
           <br />
         </p>
 
-        <div class="row">
-          <h4>Do you want tu subscribe to out newsteller?</h4>
-          <div class="col">
+        <div class="d-flex justify-content-between" style="width: 70%">
+          <p><strong>Do you want tu subscribe to out newsteller?</strong></p>
+          <div>
+            <label for="subscribe" class="ml-5">✔️Yes!</label>
             <input
               v-model="subscribe"
               type="checkbox"
               name="subscribe"
-              class="form-check-input"
+              class="form-check-input ml-5"
               value="true"
             />
-            <label for="subscribe">✔️</label>
           </div>
         </div>
-        <div class="row">
-          <p>Accept terms and policity of neko</p>
-          <div class="col">
+        <div class="d-flex justify-content-between" style="width: 70%">
+          <p>Please accept terms and policity of neko</p>
+          <div>
+            <label for="terms"> ✔️Yes!</label>
             <input
               v-model="terms"
               type="checkbox"
@@ -107,7 +107,6 @@
               class="form-check-input"
               value="true"
             />
-            <label for="terms">✔️</label>
           </div>
         </div>
         <hr />
@@ -119,12 +118,9 @@
   </div>
 </template>
 <script>
-import TableComponent from "../components/TableComponent.vue";
 export default {
   name: "UserForm",
-  components: {
-    TableComponent,
-  },
+  components: {},
   data() {
     return {
       name: "",
@@ -137,7 +133,6 @@ export default {
       terms: false,
       password: "",
       secondpass: "",
-      users: [],
       errors: [],
       countryList: [
         "Argentina",
@@ -220,11 +215,11 @@ export default {
   methods: {
     userData() {
       if (
-        this.name.length > 8 &&
+        this.name.length > 5 &&
         this.telefone.length > 8 &&
         this.email &&
         this.img.length > 8 &&
-        this.address.length > 6 &&
+        this.address.length > 2 &&
         this.terms === true &&
         this.password.length > 6 &&
         this.password === this.secondpass &&
@@ -241,8 +236,8 @@ export default {
           terms: this.terms,
           password: this.password,
         };
-        this.users.push(data);
-        this.$toastr.s("Excelent!");
+        this.$store.dispatch("postUsers", data);
+        this.$toastr.s(`Excellente user ${this.name} added!`);
         this.name = "";
         this.email = "";
         this.telephone = "";
@@ -254,12 +249,20 @@ export default {
         this.password = "";
         this.secondpass = "";
         this.country = "";
+        this.$router.push("/");
         return true;
       }
       if (!this.name) {
-        this.errors.push("Your name is too short");
+        this.errors.push("Please complete this field");
       }
-      if (!this.telefone) {
+      if (this.name.length < 5) {
+        this.errors.push("Your name is too short!");
+      }
+
+      if (this.address.length < 3) {
+        this.errors.push("Please complete a valid address");
+      }
+      if (this.telefone.length < 8) {
         this.errors.push("Please complete a valid phone number");
       }
       if (!this.email) {

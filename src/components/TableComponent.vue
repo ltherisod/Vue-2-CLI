@@ -22,8 +22,8 @@
           <td>{{ user.email }}</td>
           <td>{{ user.country }}</td>
           <td>{{ user.address }}</td>
-          <td v-if="user.subscribe === true">:D</td>
-          <td v-else>{{ user.subscribe }}</td>
+          <td v-if="user.subscribe">😊</td>
+          <td v-else>😢</td>
         </tr>
       </tbody>
     </table>
